@@ -1,0 +1,63 @@
+﻿EVALUATE
+	ADDCOLUMNS(Sales,"國家中文",
+		SWITCH(
+			Sales[Country],
+			"USA","美國",
+			"France","法國",
+			"Germany","德國",
+			"Great Britain","英國",
+			"其他"
+			)
+		)
+		
+EVALUATE
+	ADDCOLUMNS(Sales,"績效指標",
+		SWITCH(TRUE,
+		(Sales[Quantity] * Sales[Price per item] - Sales[Sales plan] > 200),"A+",
+		(Sales[Quantity] * Sales[Price per item] - Sales[Sales plan] > 100),"A",
+		"B")
+	)
+	
+EVALUATE
+	VAR total = SUM(Sales[Sales fact])
+	VAR a = SUMX(FILTER(Sales,[country] = "USA"),[Price per item] * [Quantity])
+	VAR b = SUMX(FILTER(Sales,[country] = "Germany"),[Price per item] * [Quantity])
+	VAR c = SUMX(FILTER(Sales,[country] = "France"),[Price per item] * [Quantity])
+	VAR d = SUMX(FILTER(Sales,[country] = "Great Britain"),[Price per item] * [Quantity])
+	
+	RETURN
+	{total,
+	ROUND(a/total,3)*100 & "%",
+	ROUND(b/total,3)*100 & "%",
+	ROUND(c/total,3)*100 & "%",
+	ROUND(d/total,3)*100 & "%"}
+	
+EVALUATE
+	VAR total = SUM(Sales[Sales fact])
+	VAR a = SUMX(FILTER(Sales,[country] = "USA"),[Price per item] * [Quantity])
+	VAR b = SUMX(FILTER(Sales,[country] = "Germany"),[Price per item] * [Quantity])
+	VAR c = SUMX(FILTER(Sales,[country] = "France"),[Price per item] * [Quantity])
+	VAR d = SUMX(FILTER(Sales,[country] = "Great Britain"),[Price per item] * [Quantity])
+	
+	RETURN
+	ADDCOLUMNS(Sales,"國家%",
+	SWITCH([Country],
+		"USA",ROUND([Sales fact]/a,6)*100 & "%",
+		"France",ROUND([Sales fact]/b,6)*100 & "%",
+		"Germany",ROUND([Sales fact]/c,6)*100 & "%",
+		"Great Britain",ROUND([Sales fact]/d,6)*100 & "%",
+		"ERROR"
+		)
+	)
+	
+	ORDER BY [國家%] ASC
+	
+EVALUATE
+	VAR total = SUM(Sales[Sales fact])
+	VAR a = SUMX(FILTER(Sales,[country] = "USA"),[Price per item] * [Quantity])
+	VAR b = SUMX(FILTER(Sales,[country] = "Germany"),[Price per item] * [Quantity])
+	VAR c = SUMX(FILTER(Sales,[country] = "France"),[Price per item] * [Quantity])
+	VAR d = SUMX(FILTER(Sales,[country] = "Great Britain"),[Price per item] * [Quantity])
+	
+	RETURN
+	ADDCOLUMNS(Sales,"全球%",ROUND([Sales fact]/total,8)*100 & "%")
