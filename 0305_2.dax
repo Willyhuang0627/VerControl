@@ -60,15 +60,4 @@ EVALUATE
 	VAR d = SUMX(FILTER(Sales,[country] = "Great Britain"),[Price per item] * [Quantity])
 	
 	RETURN
-<<<<<<< HEAD
-<<<<<<< HEAD
 	ADDCOLUMNS(Sales,"全球%",ROUND([Sales fact]/total,8)*100 & "%")
-=======
-	ADDCOLUMNS(Sales,"全球%",ROUND([Sales fact]/total,8)*100 & "%")
-=======
-	ADDCOLUMNS(Sales,"全球%",ROUND([Sales fact]/total,8)*100 & "%"
->>>>>>> fix1
-
-EVALUATE
-	row("統計資料","4個國家","總金額")
->>>>>>> fix1
